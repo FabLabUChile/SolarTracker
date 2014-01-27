@@ -30,7 +30,8 @@ unsigned char esperar(){
   return 0;
 }
 
-void setPosition(char s){
+void setPosition(){
+  unsigned char s=Serial.read();
   switch (s){
     case 'h':
       TIMEOUT=esperar();
@@ -38,7 +39,8 @@ void setPosition(char s){
         Serial.println("TO");
         break;
       }
-      h_angle=//constrain(Serial.read(),0,179);
+      h_angle=Serial.read();
+      h_angle=constrain(h_angle,0,179);//constrain(Serial.read(),0,179);
       Serial.print("H ");
       Serial.println(h_angle);
       break;
@@ -88,7 +90,7 @@ void setup(){
 void loop(){
   if (Serial.available()){
     /* recibe datos */
-    setPosition(Serial.read());
+    setPosition();
   }
 }
 

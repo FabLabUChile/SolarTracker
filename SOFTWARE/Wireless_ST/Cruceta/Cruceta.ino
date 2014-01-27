@@ -28,6 +28,8 @@ unsigned char sensor[]={0,1,2,3};
 Servo h_servo;
 Servo v_servo;
 unsigned char h_angle,v_angle;
+unsigned char estable=0;
+unsigned char sent=0;
 
 /* valores sensados y promedios para calcular en loop */
 /* Los nombres de las variables son definidos según las letras iniciales de las palabras "up down left right". */
@@ -41,9 +43,9 @@ void setServos(){
 }
 
 void setPanels(){
-  Serial.print("h");
+  Serial.write("h");
   Serial.write(h_angle);
-  Serial.print("v");
+  Serial.write("v");
   Serial.write(v_angle);
 }
 /******* MAIN      *******/
@@ -90,15 +92,24 @@ void loop(){
   h_servo.write(map(ul_val,0,1024,0,127));
   v_servo.write(map(ur_val,0,1024,0,127));
   delay(15);*/
-  
+  estable=1;
   /* mover horizontalmente. Comparar promedios y determinar movimiento */
-  if ((left_prom-right_prom>H_TOLERANCE)||(right_prom-left_prom>H_TOLERANCE))
+  if ((left_prom-right_prom>H_TOLERANCE)||(right_prom-left_prom>H_TOLERANCE)){
     h_angle= (left_prom>right_prom) ? constrain((h_angle - H_ANGLE_STEP),0,179) : constrain((h_angle + H_ANGLE_STEP),0,179);
+    estable=0;
+    sent=0;
+  }
   /* mover verticalmente. Comparar y determinar movimiento */
-  if ((up_prom-down_prom>V_TOLERANCE)||(down_prom-up_prom>V_TOLERANCE))
+  if ((up_prom-down_prom>V_TOLERANCE)||(down_prom-up_prom>V_TOLERANCE)){
     v_angle= (up_prom>down_prom) ? constrain((v_angle - V_ANGLE_STEP),0,179) : constrain((v_angle + V_ANGLE_STEP),0,179);
+    estable=0;
+    sent=0;
+  }
   setServos();
-  setPanels();
+  if ((estable)&&!sent){
+    setPanels();
+    sent=1;
+  }
   delay(DELAY);
 }
 

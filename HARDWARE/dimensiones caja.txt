@@ -1,0 +1,6 @@
+cajita solar tracker:
+
+96 x 26 x 51  mm
+
+Las dimensiones consideran SOLO el ESPACIO VACIO que debe haber dentro del contenedor. Hay que tener en cuenta el grosor del material a usar y añadirlo a las dimensiones.
+
