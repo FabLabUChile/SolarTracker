@@ -32,6 +32,7 @@ unsigned char esperar(){
 
 void setPosition(){
   unsigned char s=Serial.read();
+  Serial.write(s); //reenvía la info al siguiente panel solar
   switch (s){
     case 'h':
       TIMEOUT=esperar();
@@ -40,6 +41,7 @@ void setPosition(){
         break;
       }
       h_angle=Serial.read();
+      Serial.write(h_angle); //reenvía
       h_angle=constrain(h_angle,0,179);//constrain(Serial.read(),0,179);
       Serial.print("H ");
       Serial.println(h_angle);
@@ -51,6 +53,7 @@ void setPosition(){
         break;
       }
       v_angle=Serial.read();
+      Serial.write(v_angle); //reenvía
       v_angle=constrain(v_angle,0,179);//constrain(Serial.read(),0,179);
       delay(20);
       Serial.print("V ");
